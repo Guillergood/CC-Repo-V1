@@ -1,0 +1,10 @@
+pandas
+pymongo
+datetime
+flask
+sklearn
+pmdarima
+numpy
+statsmodels
+gunicorn
+joblib

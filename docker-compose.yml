@@ -1,0 +1,53 @@
+version: '3.3'
+services:
+    servicio_v1_gbv:
+        image: servicio_v1_gbv
+        build:
+            context: ./v1
+            dockerfile: Dockerfile
+        networks:
+            - MONGO
+        depends_on:
+            - mongo
+        ports:
+        - 5000:5000
+    servicio_v2_gbv:
+        image: servicio_v2_gbv
+        build:
+            context: ./v2
+            dockerfile: Dockerfile
+        networks:
+            - MONGO
+        depends_on:
+            - mongo
+        ports:
+        - 5001:5000
+# https://gist.github.com/adamelliotfields/cd49f056deab05250876286d7657dc4b
+    mongo:
+        image: mongo:latest
+        container_name: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: admin
+        ports:
+            - "0.0.0.0:27017:27017"
+        networks:
+            - MONGO
+    mongo-express:
+        image: mongo-express:latest
+        container_name: mongo-express
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+            ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+            ME_CONFIG_MONGODB_SERVER: mongo
+            ME_CONFIG_MONGODB_PORT: "27017"
+        ports:
+            - "0.0.0.0:8081:8081"
+        networks:
+            - MONGO
+        depends_on:
+            - mongo
+    
+networks:
+    MONGO:
+
